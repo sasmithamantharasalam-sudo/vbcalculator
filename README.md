@@ -37,9 +37,7 @@ A single-screen Android app, built with **MIT App Inventor**, that lets you spea
 
 
 
-![App Screenshot](Screenshot%20(206)
-
-.png)
+![App Screenshot](Screenshot%20%28206%29.png)
 
 *The app in action — showing the recognized question and computed answer.*
 
