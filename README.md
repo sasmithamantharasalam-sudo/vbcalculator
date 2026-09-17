@@ -10,7 +10,9 @@ A single-screen Android app, built with **MIT App Inventor**, that lets you spea
 3. The app transcribes your speech and shows it under **QUESTION**
 4. It parses the number, operator, and number, calculates the result, and shows it under **ANSWER**
 5. It speaks the result back: *"The answer is: 8"*
+## 🌐 Live Website
 
+[Click here to open the Voice-Based Calculator](https://sasmithamantharasalam-sudo.github.io/vbcalculator/)
 ## Features
 
 - 🎤 Voice input via device microphone (`SpeechRecognizer`)
