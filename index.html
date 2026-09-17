@@ -3,23 +3,18 @@
 <head>
     <title>Voice-Based Calculator</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
+            padding: 0;
             background: white;
-            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-family: Arial, sans-serif;
+            text-align: center;
         }
 
-        /* Top bar */
-        .topbar {
+        .top {
             height: 80px;
             background: #3f51b5;
             color: white;
@@ -27,10 +22,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 25px;
-            font-size: 32px;
         }
 
-        .title {
+        .screen {
             font-size: 32px;
         }
 
@@ -38,52 +32,141 @@
             font-size: 35px;
         }
 
-        /* Main area */
-        .container {
-            min-height: calc(100vh - 80px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 45vh;
-        }
-
-        .section {
-            text-align: center;
-            margin-bottom: 35px;
+        .content {
+            margin-top: 480px;
         }
 
         .heading {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: bold;
             font-style: italic;
-            margin-bottom: 12px;
+            margin: 20px;
         }
 
         .value {
-            font-size: 26px;
-            min-height: 35px;
+            font-size: 25px;
+            margin-bottom: 30px;
         }
 
-        /* Ask button */
-        .ask-button {
-            border: none;
-            background: #d9d9d9;
-            padding: 15px 22px;
-            font-family: "Comic Sans MS", cursive, sans-serif;
-            font-size: 24px;
+        #ask {
+            padding: 15px 20px;
+            font-size: 22px;
+            font-weight: bold;
             font-style: italic;
-            cursor: pointer;
+            background: #d8d8d8;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 3px 6px #999;
+        }
+    </style>
+</head>
 
-            box-shadow: 0 3px 7px rgba(0,0,0,0.25);
+<body>
+
+    <div class="top">
+        <div class="screen">Screen1</div>
+        <div class="menu">⋮</div>
+    </div>
+
+    <div class="content">
+
+        <div class="heading">
+            QUESTION
+        </div>
+
+        <div class="value" id="question">
+            -
+        </div>
+
+        <div class="heading">
+            ANSWER
+        </div>
+
+        <div class="value" id="answer">
+            -
+        </div>
+
+        <button id="ask" onclick="startVoice()">
+            ASK A QUESTION
+        </button>
+
+    </div>
+
+    <script>
+
+        function startVoice() {
+
+            var SpeechRecognition =
+                window.SpeechRecognition ||
+                window.webkitSpeechRecognition;
+
+            if (!SpeechRecognition) {
+                alert("Voice recognition is not supported.");
+                return;
+            }
+
+            var recognition = new SpeechRecognition();
+
+            recognition.lang = "en-US";
+
+            recognition.start();
+
+            document.getElementById("question").innerText =
+                "Listening...";
+
+            recognition.onresult = function(event) {
+
+                var text =
+                    event.results[0][0].transcript;
+
+                document.getElementById("question").innerText =
+                    text;
+
+                var answer = calculate(text);
+
+                document.getElementById("answer").innerText =
+                    answer;
+            };
         }
 
-        .ask-button:active {
-            transform: scale(0.97);
+
+        function calculate(text) {
+
+            text = text.toLowerCase();
+
+            text = text.replace(/plus/g, "+");
+            text = text.replace(/add/g, "+");
+
+            text = text.replace(/minus/g, "-");
+            text = text.replace(/subtract/g, "-");
+
+            text = text.replace(/times/g, "*");
+            text = text.replace(/multiply/g, "*");
+            text = text.replace(/multiplied by/g, "*");
+
+            text = text.replace(/divided by/g, "/");
+            text = text.replace(/divide/g, "/");
+
+            text = text.replace(/\s/g, "");
+
+            try {
+
+                if (/^[0-9+\-*/.]+$/.test(text)) {
+
+                    return Function("return " + text)();
+
+                } else {
+
+                    return "Unable to calculate";
+                }
+
+            } catch (error) {
+
+                return "Invalid calculation";
+            }
         }
 
-        /* Mobile */
-        @media (max-width: 500px) {
+    </script>
 
-            .topbar {
-                height: 80px;
-                padding: 0
+</body>
+</html>
